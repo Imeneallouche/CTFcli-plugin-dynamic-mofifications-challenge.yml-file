@@ -38,16 +38,10 @@ def existAttribute(parsedYaml, attributeName):
 # .
 
 
-def update(parsedYaml, attributeName, Type, value):
+def update(parsedYaml, attributeName, Type, value, action_on_item):
     if(existAttribute(parsedYaml, attributeName)):
-        if(Type == "list" or Type == "dict"):
-            print("\nhow do you want to update the attribute:\n 1- add an item\n 2-update an item \n 3-delete an item\n")
-            option = int(input("option chosen: "))
-
-            while(option < 1 or option > 3):
-                option = input("invalid option try another:")
-
-            if(option == 1):
+        if(Type != 'Other'):
+            if(action_on_item == 1):
                 item = addItem(value, Type)
                 if(Type == "dict"):
                     parsedYaml[attributeName].update(item)
@@ -55,10 +49,8 @@ def update(parsedYaml, attributeName, Type, value):
                     parsedYaml[attributeName].append(item)
             else:
                 print("on work...")
-
         else:
             print("error, attribute don't accept more than one value")
-
     else:
         print("attribute will be added\n")
         item = addAttribute(attributeName, Type, value)
@@ -85,7 +77,9 @@ def addAttribute(attributeName, Type, value):
 # .
 # .
 # .
-
+# .
+# .
+# .
 def addItem(value, Type):
     if(Type == "dict"):
         subKey = value.split(':')[0]
@@ -94,3 +88,58 @@ def addItem(value, Type):
     elif(value.isdigit()):
         value = int(value)
     return value
+
+# .
+# .
+# .
+# .
+# .
+# .
+# .
+
+
+def validate_indices(parsed, indices, x=None):
+    if len(indices) == 0:
+        return parsed, x
+    x = indices[0]
+    if type(x) is int:
+        if x > len(parsed)-1:
+            raise KeyError(f"given index: {x} is too big")
+    else:
+        if x not in parsed:
+            raise KeyError(f"given key: {x} doesn't exist in the file")
+        else:
+            validate_indices(parsed[x], indices[1:])
+
+# .
+# .
+# .
+# .
+# .
+# .
+# .
+
+
+def delete_item(parsed, indices):
+    parsed, x = validate_indices(parsed, indices)
+    if len(indices) == 0:
+        return
+    else:
+        del parsed[x]
+
+
+# .
+# .
+# .
+# .
+# .
+# .
+# .
+
+def update_item(parsed, indices, val):
+    validate_indices(parsed, indices)
+    if len(indices) == 0:
+        return
+    else:
+        parsed, x = validate_indices(parsed, indices)
+        parsed[x] = val
