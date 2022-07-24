@@ -98,9 +98,9 @@ def addItem(value, Type):
 # .
 
 
-def validate_indices(parsed, indices, x=None):
+def validate_indices(parsed, indices):
     if len(indices) == 0:
-        return parsed, x
+        return
     x = indices[0]
     if type(x) is int:
         if x > len(parsed)-1:
@@ -121,25 +121,30 @@ def validate_indices(parsed, indices, x=None):
 
 
 def delete_item(parsed, indices):
-    parsed, x = validate_indices(parsed, indices)
+    validate_indices(parsed, indices)
     if len(indices) == 0:
         return
-    else:
+    x = indices[0]
+    if len(indices) == 1:
         del parsed[x]
+    else:
+        delete_item(parsed[x], indices[1:])
 
+# .
+# .
+# .
+# .
+# .
+# .
+# .
 
-# .
-# .
-# .
-# .
-# .
-# .
-# .
 
 def update_item(parsed, indices, val):
     validate_indices(parsed, indices)
     if len(indices) == 0:
         return
-    else:
-        parsed, x = validate_indices(parsed, indices)
+    x = indices[0]
+    if len(indices) == 1:
         parsed[x] = val
+    else:
+        update_item(parsed[x], indices[1:], val)
