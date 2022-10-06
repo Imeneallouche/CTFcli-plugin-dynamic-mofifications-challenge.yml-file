@@ -1,0 +1,14 @@
+REF_DIRNAME = 'ref'
+
+CHALLENGE_YML_FILENAME = 'challenge.yml'
+
+SUBCOMMAND_UPDATE = 'update'
+SUBCOMMAND_DELETE = 'delete'
+
+KEY_VAL_TYPE = 'keyval'
+STRING_VAL_TYPE = 'string'
+
+TYPES_VAL = [ 
+    STRING_VAL_TYPE, 
+    KEY_VAL_TYPE, 
+]
