@@ -1,0 +1,5 @@
+author_link: "https://..."
+extra:
+  initial: 500
+  decay: 100
+  minimum: 50
